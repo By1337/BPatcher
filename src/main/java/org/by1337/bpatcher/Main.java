@@ -29,7 +29,7 @@ public class Main {
         System.out.printf("Loaded %d patches\n", patchesLoader.getPatchers().size());
         inst.addTransformer(new ClassFileTransformer() {
             @Override
-            public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] bytes) throws IllegalClassFormatException {
+            public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] bytes) {
                 if (className.equals("org/bukkit/craftbukkit/Main")) {
 
                     InputStream version = loader.getResourceAsStream("version.json");
@@ -78,7 +78,7 @@ public class Main {
                 }
                 return null;
             }
-        });
+        }, true);
 
     }
 }

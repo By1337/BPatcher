@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.*;
 
 import java.util.ListIterator;
 
-public class ByteCodeBuilder extends InsnList {
+public class ByteCodeBuilder {
     private final InsnList source;
 
     public ByteCodeBuilder(InsnList source) {
@@ -24,6 +24,7 @@ public class ByteCodeBuilder extends InsnList {
         source.add(abstractInsnNode);
         return this;
     }
+
     @CanIgnoreReturnValue
     public ByteCodeBuilder int_(int i) {
         source.add(BytecodeHelper.pushInt(i));
@@ -982,7 +983,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @return the number of instructions in this list.
      */
-    @Override
+
     public int size() {
         return source.size();
     }
@@ -992,7 +993,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @return the first instruction in this list, or {@literal null} if the list is empty.
      */
-    @Override
+
     public AbstractInsnNode getFirst() {
         return source.getFirst();
     }
@@ -1002,7 +1003,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @return the last instruction in this list, or {@literal null} if the list is empty.
      */
-    @Override
+
     public AbstractInsnNode getLast() {
         return source.getLast();
     }
@@ -1017,7 +1018,7 @@ public class ByteCodeBuilder extends InsnList {
      * @return the instruction whose index is given.
      * @throws IndexOutOfBoundsException if (index &lt; 0 || index &gt;= size()).
      */
-    @Override
+
     public AbstractInsnNode get(int index) {
         return source.get(index);
     }
@@ -1030,7 +1031,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnNode an instruction.
      * @return {@literal true} if the given instruction belongs to this list.
      */
-    @Override
+
     public boolean contains(AbstractInsnNode insnNode) {
         return source.contains(insnNode);
     }
@@ -1046,7 +1047,7 @@ public class ByteCodeBuilder extends InsnList {
      * undefined if the given instruction does not belong to this list</i>. Use {@link #contains }
      * to test if an instruction belongs to an instruction list or not.
      */
-    @Override
+
     public int indexOf(AbstractInsnNode insnNode) {
         return source.indexOf(insnNode);
     }
@@ -1056,7 +1057,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @param methodVisitor the method visitor that must visit the instructions.
      */
-    @Override
+
     public void accept(MethodVisitor methodVisitor) {
         source.accept(methodVisitor);
     }
@@ -1066,7 +1067,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @return an iterator over the instructions in this list.
      */
-    @Override
+
     public ListIterator<AbstractInsnNode> iterator() {
         return source.iterator();
     }
@@ -1077,7 +1078,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param index index of instruction for the iterator to start at.
      * @return an iterator over the instructions in this list.
      */
-    @Override
+
     public ListIterator<AbstractInsnNode> iterator(int index) {
         return source.iterator(index);
     }
@@ -1087,7 +1088,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @return an array containing all the instructions in this list.
      */
-    @Override
+
     public AbstractInsnNode[] toArray() {
         return source.toArray();
     }
@@ -1098,7 +1099,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param oldInsnNode an instruction <i>of this list</i>.
      * @param newInsnNode another instruction, <i>which must not belong to any {@link InsnList}</i>.
      */
-    @Override
+
     public void set(AbstractInsnNode oldInsnNode, AbstractInsnNode newInsnNode) {
         source.set(oldInsnNode, newInsnNode);
     }
@@ -1108,7 +1109,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @param insnNode an instruction, <i>which must not belong to any {@link InsnList}</i>.
      */
-    @Override
+
     public void add(AbstractInsnNode insnNode) {
         source.add(insnNode);
     }
@@ -1119,7 +1120,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnList an instruction list, which is cleared during the process. This list must be
      *                 different from 'this'.
      */
-    @Override
+
     public void add(InsnList insnList) {
         source.add(insnList);
     }
@@ -1129,7 +1130,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @param insnNode an instruction, <i>which must not belong to any {@link InsnList}</i>.
      */
-    @Override
+
     public void insert(AbstractInsnNode insnNode) {
         source.insert(insnNode);
     }
@@ -1140,7 +1141,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnList an instruction list, which is cleared during the process. This list must be
      *                 different from 'this'.
      */
-    @Override
+
     public void insert(InsnList insnList) {
         source.insert(insnList);
     }
@@ -1152,7 +1153,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnNode     the instruction to be inserted, <i>which must not belong to any {@link
      *                     InsnList}</i>.
      */
-    @Override
+
     public void insert(AbstractInsnNode previousInsn, AbstractInsnNode insnNode) {
         source.insert(previousInsn, insnNode);
     }
@@ -1165,7 +1166,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnList     the instruction list to be inserted, which is cleared during the process. This
      *                     list must be different from 'this'.
      */
-    @Override
+
     public void insert(AbstractInsnNode previousInsn, InsnList insnList) {
         source.insert(previousInsn, insnList);
     }
@@ -1177,7 +1178,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnNode the instruction to be inserted, <i>which must not belong to any {@link
      *                 InsnList}</i>.
      */
-    @Override
+
     public void insertBefore(AbstractInsnNode nextInsn, AbstractInsnNode insnNode) {
         source.insertBefore(nextInsn, insnNode);
     }
@@ -1190,7 +1191,7 @@ public class ByteCodeBuilder extends InsnList {
      * @param insnList the instruction list to be inserted, which is cleared during the process. This
      *                 list must be different from 'this'.
      */
-    @Override
+
     public void insertBefore(AbstractInsnNode nextInsn, InsnList insnList) {
         source.insertBefore(nextInsn, insnList);
     }
@@ -1200,7 +1201,7 @@ public class ByteCodeBuilder extends InsnList {
      *
      * @param insnNode the instruction <i>of this list</i> that must be removed.
      */
-    @Override
+
     public void remove(AbstractInsnNode insnNode) {
         source.remove(insnNode);
     }
@@ -1208,7 +1209,7 @@ public class ByteCodeBuilder extends InsnList {
     /**
      * Removes all the instructions of this list.
      */
-    @Override
+
     public void clear() {
         source.clear();
     }
@@ -1217,7 +1218,7 @@ public class ByteCodeBuilder extends InsnList {
      * Resets all the labels in the instruction list. This method should be called before reusing an
      * instruction list between several <code>ClassWriter</code>s.
      */
-    @Override
+
     public void resetLabels() {
         source.resetLabels();
     }

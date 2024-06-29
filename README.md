@@ -28,7 +28,7 @@ Upon first launch, BPatcher will create a `patches` folder. You can move your pa
             <dependency>
                 <groupId>org.by1337.bpatcher</groupId>
                 <artifactId>BPatcher</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
