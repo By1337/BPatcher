@@ -799,7 +799,7 @@ public class ByteCodeBuilder extends InsnList {
 
     @CanIgnoreReturnValue
     public ByteCodeBuilder getstatic(ClassNode owner, FieldNode fieldNode) {
-        return visitFieldInsn(Opcodes.GETSTATIC, owner.name, fieldNode.name, fieldNode.name);
+        return visitFieldInsn(Opcodes.GETSTATIC, owner.name, fieldNode.name, fieldNode.desc);
     }
 
     @CanIgnoreReturnValue
@@ -814,7 +814,7 @@ public class ByteCodeBuilder extends InsnList {
 
     @CanIgnoreReturnValue
     public ByteCodeBuilder putstatic(ClassNode owner, FieldNode fieldNode) {
-        return visitFieldInsn(Opcodes.PUTSTATIC, owner.name, fieldNode.name, fieldNode.name);
+        return visitFieldInsn(Opcodes.PUTSTATIC, owner.name, fieldNode.name, fieldNode.desc);
     }
 
     @CanIgnoreReturnValue
@@ -829,7 +829,7 @@ public class ByteCodeBuilder extends InsnList {
 
     @CanIgnoreReturnValue
     public ByteCodeBuilder getfield(ClassNode owner, FieldNode fieldNode) {
-        return visitFieldInsn(Opcodes.GETFIELD, owner.name, fieldNode.name, fieldNode.name);
+        return visitFieldInsn(Opcodes.GETFIELD, owner.name, fieldNode.name, fieldNode.desc);
     }
 
     @CanIgnoreReturnValue
@@ -843,8 +843,8 @@ public class ByteCodeBuilder extends InsnList {
     }
 
     @CanIgnoreReturnValue
-    public ByteCodeBuilder putfield(ClassNode owner, FieldNode FieldNode) {
-        return visitFieldInsn(Opcodes.PUTFIELD, owner.name, FieldNode.name, FieldNode.name);
+    public ByteCodeBuilder putfield(ClassNode owner, FieldNode fieldNode) {
+        return visitFieldInsn(Opcodes.PUTFIELD, owner.name, fieldNode.name, fieldNode.desc);
     }
 
     @CanIgnoreReturnValue
