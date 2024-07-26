@@ -12,6 +12,15 @@ public class BytecodeHelper {
                 return method;
         return null;
     }
+
+    @Nullable
+    public static MethodNode getMethod(final ClassNode classNode, final String name, final String desc) {
+        for (final MethodNode method : classNode.methods)
+            if (method.name.equals(name) && method.desc.equals(desc))
+                return method;
+        return null;
+    }
+
     public static AbstractInsnNode pushInt(int i) {
         if (i >= -1 && i <= 5) {
             return new InsnNode(Opcodes.ICONST_0 + i);

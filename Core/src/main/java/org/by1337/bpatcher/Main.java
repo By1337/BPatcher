@@ -2,31 +2,41 @@ package org.by1337.bpatcher;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.sun.source.doctree.SeeTree;
+import org.by1337.bpatcher.patcher.PatcherClassLoader;
 import org.by1337.bpatcher.patcher.PatchesLoader;
+import org.by1337.bpatcher.patcher.api.Inject;
 import org.by1337.bpatcher.patcher.api.Patcher;
+import org.by1337.bpatcher.util.FunctionToByteArray;
+import org.by1337.bpatcher.util.Pair;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.ProtectionDomain;
-import java.util.List;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
 
 public class Main {
 
-
     public static void premain(String args, Instrumentation inst) {
-
         File patches = new File("./patches");
         PatchesLoader patchesLoader = new PatchesLoader(patches);
         patchesLoader.load();
         System.out.printf("Loaded %d patches\n", patchesLoader.getPatchers().size());
+        injectClasses(inst, patchesLoader);
+
         inst.addTransformer(new ClassFileTransformer() {
             @Override
             public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] bytes) {
@@ -57,7 +67,7 @@ public class Main {
                 }
 
                 List<Patcher> patchers = patchesLoader.getPatchersByClass(className);
-                if (patchers == null) return null;
+                if (patchers.isEmpty()) return null;
 
                 try {
                     ClassReader reader = new ClassReader(bytes);
@@ -69,8 +79,11 @@ public class Main {
                     for (Patcher patcher : patchers) {
                         patcher.apply(node);
                     }
+
                     node.accept(writer);
-                    System.out.printf("Applied %d patches for %s\n", patchers.size(), className);
+                    if (!patchers.isEmpty()) {
+                        System.out.printf("Applied %d patches for %s\n", patchers.size(), className);
+                    }
                     return writer.toByteArray();
                 } catch (Throwable throwable) {
                     System.out.println("Failed to apply patches for " + className);
@@ -79,6 +92,35 @@ public class Main {
                 return null;
             }
         }, true);
+    }
 
+    private static void injectClasses(Instrumentation inst, PatchesLoader patchesLoader) {
+        if (patchesLoader.getInjectClassesMap().isEmpty()) return;
+        File cache = new File("./patches/cache");
+        cache.mkdirs();
+
+        int counter = 0;
+        File outFile = new File(cache, "injected.jar");
+        try (JarOutputStream out = new JarOutputStream(new FileOutputStream(outFile))) {
+
+            Map<PatcherClassLoader, List<Pair<ZipEntry, FunctionToByteArray<ZipEntry>>>> map = patchesLoader.getInjectClassesMap();
+
+            for (List<Pair<ZipEntry, FunctionToByteArray<ZipEntry>>> value : map.values()) {
+                for (Pair<ZipEntry, FunctionToByteArray<ZipEntry>> pair : value) {
+                    out.putNextEntry(pair.getLeft());
+                    out.write(pair.getRight().apply(pair.getLeft()));
+                    counter++;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create injected classes jar!", e);
+        }
+
+        try {
+            inst.appendToSystemClassLoaderSearch(new JarFile(outFile));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to injected classes!", e);
+        }
+        System.out.printf("Injected %d classes\n", counter);
     }
 }
