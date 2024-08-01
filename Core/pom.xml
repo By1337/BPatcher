@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>BPatcher</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>org.by1337.bpatcher</groupId>
         <artifactId>BPatcher-parent</artifactId>
-        <version>1.2</version>
+        <version>1.2.1</version>
     </parent>
 
     <properties>
@@ -27,7 +27,6 @@
             <url>https://repo.by1337.space/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-
 
 
     <build>
@@ -137,6 +136,7 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.11.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -149,11 +149,13 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>24.1.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_annotations</artifactId>
             <version>2.23.0</version>
+            <scope>compile</scope>
         </dependency>
         <!-- tests -->
         <dependency>

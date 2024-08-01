@@ -1,6 +1,7 @@
 package org.by1337.bpatcher.patcher;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.by1337.bpatcher.patcher.api.Inject;
@@ -63,16 +64,24 @@ public class PatcherClassLoader extends URLClassLoader {
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
                 if (jsonObject.has("inject")) {
-                    injectClasses = new HashSet<>(jsonObject.getAsJsonArray("inject").asList().stream().map(JsonElement::getAsString).toList());
+                    injectClasses = new HashSet<>(asList(jsonObject.getAsJsonArray("inject")).stream().map(JsonElement::getAsString).toList());
                 }
                 if (jsonObject.has("patch")) {
-                    patchClasses = new HashSet<>(jsonObject.getAsJsonArray("patch").asList().stream().map(JsonElement::getAsString).toList());
+                    patchClasses = new HashSet<>(asList(jsonObject.getAsJsonArray("patch")).stream().map(JsonElement::getAsString).toList());
                 }
                 if (jsonObject.has("main")) {
                     main = jsonObject.get("main").getAsString();
                 }
             }
         }
+    }
+
+    private List<JsonElement> asList(JsonArray array) {
+        List<JsonElement> result = new ArrayList<>(array.size());
+        for (JsonElement element : array) {
+            result.add(element);
+        }
+        return result;
     }
 
     public List<Patcher> findPatches() {

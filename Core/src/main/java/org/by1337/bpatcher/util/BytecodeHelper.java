@@ -1,6 +1,8 @@
 package org.by1337.bpatcher.util;
 
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -19,6 +21,14 @@ public class BytecodeHelper {
             if (method.name.equals(name) && method.desc.equals(desc))
                 return method;
         return null;
+    }
+
+    public static ClassNode readClass(final byte[] classFile){
+        ClassReader reader = new ClassReader(classFile);
+
+        ClassNode node = new ClassNode();
+        reader.accept(node, ClassReader.EXPAND_FRAMES);
+        return node;
     }
 
     public static AbstractInsnNode pushInt(int i) {

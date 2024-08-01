@@ -2,10 +2,8 @@ package org.by1337.bpatcher;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.sun.source.doctree.SeeTree;
 import org.by1337.bpatcher.patcher.PatcherClassLoader;
 import org.by1337.bpatcher.patcher.PatchesLoader;
-import org.by1337.bpatcher.patcher.api.Inject;
 import org.by1337.bpatcher.patcher.api.Patcher;
 import org.by1337.bpatcher.util.FunctionToByteArray;
 import org.by1337.bpatcher.util.Pair;
@@ -15,15 +13,10 @@ import org.objectweb.asm.tree.ClassNode;
 
 import java.io.*;
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.security.ProtectionDomain;
-import java.util.*;
-import java.util.jar.JarEntry;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
@@ -71,7 +64,7 @@ public class Main {
 
                 try {
                     ClassReader reader = new ClassReader(bytes);
-                    ClassWriter writer = new ClassWriter(0);
+                    ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
                     ClassNode node = new ClassNode();
                     reader.accept(node, ClassReader.EXPAND_FRAMES);
