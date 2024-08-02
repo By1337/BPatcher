@@ -29,4 +29,18 @@ public interface Patcher {
      * @return the name of the class that needs to be modified.
      */
     String targetClass();
+
+    /**
+     * Indicates if the frames need to be recomputed after modifications.
+     * <p>
+     * If modifications to the bytecode require frame recalculation, implementations should return {@code true}.
+     * Otherwise, they should return {@code false}. Frame recalculation can be necessary when the bytecode
+     * structure changes significantly, affecting the method frames.
+     * </p>
+     *
+     * @return {@code true} if frame recomputation is needed, {@code false} otherwise.
+     */
+    default boolean needRecomputeFrames() {
+        return false;
+    }
 }
