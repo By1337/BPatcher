@@ -23,7 +23,7 @@ public class BytecodeHelper {
         return null;
     }
 
-    public static ClassNode readClass(final byte[] classFile){
+    public static ClassNode readClass(byte[] classFile) {
         ClassReader reader = new ClassReader(classFile);
 
         ClassNode node = new ClassNode();

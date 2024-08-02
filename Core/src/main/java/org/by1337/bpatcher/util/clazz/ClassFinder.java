@@ -46,25 +46,25 @@ public class ClassFinder {
                 return null;
             }
             String className = name + ".class";
-            InputStream classStream = loader.getResourceAsStream(className);
+            try (InputStream classStream = loader.getResourceAsStream(className)) {
+                if (classStream == null) {
+                    return null;
+                }
 
-            if (classStream == null) {
-                return null;
+                ClassReader classReader = new ClassReader(classStream);
+                ClassNode node = new ClassNode();
+                classReader.accept(node, ClassReader.SKIP_CODE);
+
+                return new ClassData(
+                        node.name,
+                        node.superName,
+                        node.access,
+                        node.version,
+                        node.interfaces
+                );
             }
 
-            ClassReader classReader = new ClassReader(classStream);
-            ClassNode node = new ClassNode();
-            classReader.accept(node, ClassReader.SKIP_CODE);
-
-            return new ClassData(
-                    node.name,
-                    node.superName,
-                    node.access,
-                    node.version,
-                    node.interfaces
-            );
         } catch (IOException ignore) {
-
         }
         return null;
     }
